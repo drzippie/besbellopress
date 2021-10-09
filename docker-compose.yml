@@ -78,6 +78,8 @@ services:
             dockerfile: './docker/meilisearch-m1/Dockerfile'
         ports:
             - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
+        environment:
+            MEILI_MASTER_KEY: 'XXMEILI_MASTER_KEYXX'
         volumes:
             - './docker/volumes/meilisearch:/data.ms'
         networks:

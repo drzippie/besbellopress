@@ -41,7 +41,7 @@ class CreateDefaultRoles extends Migration
         $roleAdmin->givePermissionTo($permEditOthersArticles);
         $roleRoot->givePermissionTo($permEditOthersArticles);
 
-        
+
 
     }
 
