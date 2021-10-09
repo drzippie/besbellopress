@@ -36,7 +36,7 @@ services:
             POSTGRES_USER: '${DB_USERNAME}'
             POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
         volumes:
-            - 'sailpgsql:/var/lib/postgresql/data'
+            - './docker/volumes/psql:/var/lib/postgresql/data'
         networks:
             - sail
         healthcheck:
@@ -64,7 +64,7 @@ services:
             MINIO_ROOT_USER: 'sail'
             MINIO_ROOT_PASSWORD: 'password'
         volumes:
-            - 'sailminio:/data/minio'
+            - './docker/volumes/minio:/data/minio'
         networks:
             - sail
         command: minio server /data/minio --console-address ":8900"
@@ -77,7 +77,7 @@ services:
         ports:
             - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
         volumes:
-            - 'sailmeilisearch:/data.ms'
+            - './docker/volumes/meilisearch:/data.ms'
         networks:
             - sail
         healthcheck:
@@ -88,11 +88,5 @@ networks:
     sail:
         driver: bridge
 volumes:
-    sailpgsql:
-        driver: local
     sailredis:
-        driver: local
-    sailminio:
-        driver: local
-    sailmeilisearch:
         driver: local

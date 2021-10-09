@@ -21,3 +21,6 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
+/docker/volumes/meilisearch/
+/docker/volumes/minio/
+/docker/volumes/psql/
