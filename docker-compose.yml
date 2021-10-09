@@ -1,7 +1,7 @@
 # For more information: https://laravel.com/docs/sail
 version: '3'
 services:
-    laravel.test:
+    besbellopress:
         build:
             context: ./docker/8.0
             dockerfile: Dockerfile
@@ -27,14 +27,14 @@ services:
             - minio
             - meilisearch
     pgsql:
-        image: 'postgres:13'
+        image: 'postgres:14'
         ports:
             - '${FORWARD_DB_PORT:-5432}:5432'
         environment:
-            PGPASSWORD: '${DB_PASSWORD:-secret}'
-            POSTGRES_DB: '${DB_DATABASE}'
-            POSTGRES_USER: '${DB_USERNAME}'
-            POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+            PGPASSWORD: 'besbellopress-secret'
+            POSTGRES_DB: 'besbellopress'
+            POSTGRES_USER: 'besbellopress'
+            POSTGRES_PASSWORD: 'besbellopress-secret'
         volumes:
             - './docker/volumes/psql:/var/lib/postgresql/data'
         networks:
