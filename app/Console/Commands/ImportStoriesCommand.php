@@ -43,25 +43,27 @@ class ImportStoriesCommand extends Command
 
         foreach(  DB::connection('import')->table('story')->get( ) as $row )  {
 
+            try {
+                $this->line($row->headline);
 
-            $this->line($row->headline);
+                $story = Story::query()
+                    ->where('meta->import->id', $row->id)->first();
+                if (empty($story)) {
+                    $story = new Story();
+                    $story->meta = [
+                        'import' => $row,
+                    ];
+                }
+                $story->headline = $row->headline;
+                $story->subhead = $row->subhead;
+                $story->abstract = $row->abstract;
+                $story->published_at = $row->created_at;
+                $story->body = $row->body_content ?? '';
+                $story->save();
 
-            $story = Story::query()
-                ->where('meta->import->id', $row->id)->first();
-            if ( empty( $story )) {
-                $story = new Story();
-                $story->meta =[
-                'import' => $row,
-                ];
+            } catch (\Exception $exception) {
+                print_R($row);
             }
-            $story->headline = $row->headline;
-            $story->subhead = $row->subhead;
-            $story->abstract = $row->abstract;
-            $story->published_at = $row->created_at;
-            $story->body = $row->body_content ?? '';
-            $story->save();
-
-
 
 
 
