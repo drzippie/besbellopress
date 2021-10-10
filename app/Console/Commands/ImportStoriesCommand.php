@@ -55,54 +55,54 @@ class ImportStoriesCommand extends Command
             ->pluck('id', 'import_id');
 
         // $maxStory = Story::query()->selectRaw("max((meta->'import'->'id')::INTEGER) as maxid")->value('maxid');
-        $maxStory = 0;
+        $maxStory = 687 ;
+        $this->line( 'get stories');
+        DB::connection('import')->table('story')
+            ->where('id', '>=', $maxStory )
+            ->orderBy('id')
+            ->chunk( 100 , function( $rows ) use ($usersMap, $categoriesMap) {
 
-        foreach(  DB::connection('import')->table('story')
-                      ->where('id', '>=', $maxStory )
-                        ->orderByRaw('rand()')
-                        ->limit(500)
-
-                      ->get( ) as $row )  {
-
-
-            // @todo resolve bad stories
-            $this->line($row->id);
-            if ( in_array($row->id, [4488])) {
-                continue;
-            }
-            if ( empty( $row->headline ) || empty( $row->rawtext) ) {
-                continue;
-            }
-
-            $this->line($row->headline);
-
-            $story = Story::query()
-                ->where('meta->import->id', $row->id)->first();
-            if (empty($story)) {
-                $story = new Story();
-                $story->meta = [
-                    'import' => $row,
-                ];
-            }
-            if ( empty( $row->headline ) || empty( $row->rawtext) ) {
-                continue;
-            }
-            $story->headline = Str::of( $row->headline )->trim();
-            $story->subhead = Str::of( $row->subhead )->trim();
-            $story->abstract = Str::of( $row->abstract )->trim();
-            $story->published_at = $row->created_at;
-            $story->weight = $row->weight;
-            $story->body = $row->body_content ?? '';
-            $story->category_id = $categoriesMap[$row->section_id] ?? null ;
-            $story->user_id = $usersMap[$row->user_id] ?? null ;
-            $story->save();
+                $this->line('--> Process chunk');
+                foreach(  $rows as $row ) {
 
 
+                    // @todo resolve bad stories
+                    $this->line($row->id);
+                    if (in_array($row->id, [4488])) {
+                        continue;
+                    }
+                    if (empty($row->headline) || empty($row->rawtext)) {
+                        continue;
+                    }
 
+                    $this->line($row->headline);
 
-        }
+                    $story = Story::query()
+                        ->where('meta->import->id', $row->id)->first();
+                    if (empty($story)) {
+                        $story = new Story();
+                        $story->meta = [
+                            'import' => $row,
+                        ];
+                    }
+                    if (empty($row->headline) || empty($row->rawtext)) {
+                        continue;
+                    }
+                    $story->headline = Str::of($row->headline)->trim();
+                    $story->subhead = Str::of($row->subhead)->trim();
+                    $story->abstract = Str::of($row->abstract)->trim();
+                    $story->published_at = $row->created_at;
+                    $story->weight = $row->weight;
+                    $story->body = $row->body_content ?? '';
 
+                    $story->category_id = $categoriesMap[$row->section_id] ?? null ;
 
+                    $story->user_id = $usersMap[$row->user_id] ?? null;
+                    $story->save();
+
+                }
+
+            });
     }
 
 }
