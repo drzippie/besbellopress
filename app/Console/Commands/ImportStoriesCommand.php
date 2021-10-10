@@ -4,8 +4,10 @@ namespace App\Console\Commands;
 
 use App\Models\Category;
 use App\Models\Story;
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ImportStoriesCommand extends Command
 {
@@ -41,29 +43,60 @@ class ImportStoriesCommand extends Command
     public function handle()
     {
 
-        foreach(  DB::connection('import')->table('story')->get( ) as $row )  {
 
-            try {
-                $this->line($row->headline);
+        $categoriesMap = Category::query()
+            ->selectRaw(DB::raw("meta->'import'->'id' as import_id, id"))
+            ->get()
+            ->pluck('id', 'import_id');
 
-                $story = Story::query()
-                    ->where('meta->import->id', $row->id)->first();
-                if (empty($story)) {
-                    $story = new Story();
-                    $story->meta = [
-                        'import' => $row,
-                    ];
-                }
-                $story->headline = $row->headline;
-                $story->subhead = $row->subhead;
-                $story->abstract = $row->abstract;
-                $story->published_at = $row->created_at;
-                $story->body = $row->body_content ?? '';
-                $story->save();
+        $usersMap = User::query()
+            ->selectRaw(DB::raw("meta->'import'->'id' as import_id, id"))
+            ->get()
+            ->pluck('id', 'import_id');
 
-            } catch (\Exception $exception) {
-                print_R($row);
+        // $maxStory = Story::query()->selectRaw("max((meta->'import'->'id')::INTEGER) as maxid")->value('maxid');
+        $maxStory = 0;
+
+        foreach(  DB::connection('import')->table('story')
+                      ->where('id', '>=', $maxStory )
+                        ->orderByRaw('rand()')
+                        ->limit(500)
+
+                      ->get( ) as $row )  {
+
+
+            // @todo resolve bad stories
+            $this->line($row->id);
+            if ( in_array($row->id, [4488])) {
+                continue;
             }
+            if ( empty( $row->headline ) || empty( $row->rawtext) ) {
+                continue;
+            }
+
+            $this->line($row->headline);
+
+            $story = Story::query()
+                ->where('meta->import->id', $row->id)->first();
+            if (empty($story)) {
+                $story = new Story();
+                $story->meta = [
+                    'import' => $row,
+                ];
+            }
+            if ( empty( $row->headline ) || empty( $row->rawtext) ) {
+                continue;
+            }
+            $story->headline = Str::of( $row->headline )->trim();
+            $story->subhead = Str::of( $row->subhead )->trim();
+            $story->abstract = Str::of( $row->abstract )->trim();
+            $story->published_at = $row->created_at;
+            $story->weight = $row->weight;
+            $story->body = $row->body_content ?? '';
+            $story->category_id = $categoriesMap[$row->section_id] ?? null ;
+            $story->user_id = $usersMap[$row->user_id] ?? null ;
+            $story->save();
+
 
 
 

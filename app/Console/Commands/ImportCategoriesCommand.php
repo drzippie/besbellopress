@@ -53,11 +53,11 @@ class ImportCategoriesCommand extends Command
             ->orderBy('sortorder')
             ->get();
         foreach( $rows as $row ) {
+            $this->line( $row->id );
             $category = Category::query()
-                ->where('name', $row->fullname)
-                ->first();
+                ->where('meta->import->id', $row->id)->first();
             if ( empty( $category)) {
-
+                print_R($category);
                 $category = new Category();
                 $category->name = $row->fullname;
                 $category->meta = [
