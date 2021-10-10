@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (Request $request) {
 
-    $results = \App\Models\Story::search('sevilla')->get();
+    $results = \App\Models\Story::search($request->query('search', 'sevilla'))->get();
 
     return view('welcome', ['results' => $results]);
 });

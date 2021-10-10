@@ -22,6 +22,7 @@ class AddStoriesTable extends Migration
             $table->integer('weight')->default(50);
             $table->string('slug')->unique();
             $table->jsonb('meta');
+            $table->dateTime('published_at');
             $table->timestamps();
         });
     }

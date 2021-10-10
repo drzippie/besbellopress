@@ -37,6 +37,13 @@
             @endif
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+
+                @foreach( $results as $result)
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg mt-2 text-gray-600 dark:text-gray-400 text-sm">
+
+                        {{ $result->published_at }} -   {{ $result->headline }}
+                    </div>
+                @endforeach
                 <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
                     <svg viewBox="0 0 651 192" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-16 w-auto text-gray-700 sm:h-20">
                         <g clip-path="url(#clip0)" fill="#EF3B2D">
@@ -53,10 +60,10 @@
                                 <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://laravel.com/docs" class="underline text-gray-900 dark:text-white">Documentation</a></div>
                             </div>
 
-                            <div class="ml-12">
+                            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
 
                                     @foreach( $results as $result)
-                                    <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+                                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg mt-2 text-gray-600 dark:text-gray-400 text-sm">
 
                                     {{ $result->headline }}
                                     </div>

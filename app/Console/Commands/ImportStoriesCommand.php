@@ -57,6 +57,7 @@ class ImportStoriesCommand extends Command
             $story->headline = $row->headline;
             $story->subhead = $row->subhead;
             $story->abstract = $row->abstract;
+            $story->published_at = $row->created_at;
             $story->body = $row->body_content ?? '';
             $story->save();
 
