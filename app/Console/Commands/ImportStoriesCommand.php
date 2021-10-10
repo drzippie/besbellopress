@@ -55,8 +55,11 @@ class ImportStoriesCommand extends Command
             ->pluck('id', 'import_id');
 
         // $maxStory = Story::query()->selectRaw("max((meta->'import'->'id')::INTEGER) as maxid")->value('maxid');
-        $maxStory = 687 ;
+        $maxStory = 11650 ;
         $this->line( 'get stories');
+
+        Story::withoutSyncingToSearch(function () use ($maxStory, $categoriesMap, $usersMap) {
+
         DB::connection('import')->table('story')
             ->where('id', '>=', $maxStory )
             ->orderBy('id')
@@ -67,7 +70,6 @@ class ImportStoriesCommand extends Command
 
 
                     // @todo resolve bad stories
-                    $this->line($row->id);
                     if (in_array($row->id, [4488])) {
                         continue;
                     }
@@ -75,7 +77,7 @@ class ImportStoriesCommand extends Command
                         continue;
                     }
 
-                    $this->line($row->headline);
+                    $this->line("\t{$row->id}: [{$row->created_at}] {$row->headline}");
 
                     $story = Story::query()
                         ->where('meta->import->id', $row->id)->first();
@@ -103,6 +105,9 @@ class ImportStoriesCommand extends Command
                 }
 
             });
+        });
     }
+            // Perform model actions...
+
 
 }

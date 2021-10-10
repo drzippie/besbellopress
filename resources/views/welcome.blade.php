@@ -41,7 +41,7 @@
                 @foreach( $results as $result)
                     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg mt-2 text-gray-600 dark:text-gray-400 text-sm">
 
-                        {{ $result->published_at }} -   {{ $result->headline }}
+                        {{ $result->published_at }} - <b>{{ $result->id }}</b> -    {{ $result->headline }}
                     </div>
                 @endforeach
                 <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">

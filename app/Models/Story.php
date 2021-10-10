@@ -49,26 +49,4 @@ class Story extends Model
     }
 
 
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-
-        $data =  [
-            'id' => $this->id,
-            'headline' => $this->headliine,
-            'abstract' => $this->abstract,
-            'body' => $this->body,
-            'published' => $this->published_at,
-            'category' => $this->category->name ?? '',
-        ];
-
-
-        // Customize the data array...
-
-        return $data;
-    }
 }

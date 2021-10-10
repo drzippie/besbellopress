@@ -7,7 +7,7 @@ RUN apt-get install -y\
 	libc6-dev\
 	wget
 
-RUN wget --quiet -O meilisearch https://github.com/meilisearch/MeiliSearch/releases/download/v0.20.0/meilisearch-linux-armv8 \
+RUN wget --quiet -O meilisearch https://github.com/meilisearch/MeiliSearch/releases/download/v0.23.0rc2/meilisearch-linux-armv8 \
 	&& chmod +x meilisearch
 
 ENV MEILI_HTTP_ADDR=0.0.0.0:7700
