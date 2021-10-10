@@ -14,7 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    $results = \App\Models\Story::search('sevilla')->get();
+
+    return view('welcome', ['results' => $results]);
 });
 
 Route::get('/dashboard', function () {

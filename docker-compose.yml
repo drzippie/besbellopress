@@ -95,7 +95,7 @@ services:
         environment:
             MEILI_MASTER_KEY: 'XXMEILI_MASTER_KEYXX'
         volumes:
-            - './docker/volumes/meilisearch:/data.ms'
+            - './docker/volumes/meilisearch:/meilisearch/data.ms'
         networks:
             - sail
         healthcheck:
