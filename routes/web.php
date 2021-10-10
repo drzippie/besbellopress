@@ -39,7 +39,7 @@ Route::get('/', function (Request $request) {
 
          dd( $meilisearch->updateSortableAttributes(['id', 'published_at', 'headline']));
          */
-     //   ( $meilisearch->updateSortableAttributes(['id', 'published_at', 'headline']));
+       //  ( $meilisearch->updateSortableAttributes(['id', 'published_at', 'headline']));
 
          $options['sort'] = [ 'id:desc'];
      //   dd( $meilisearch->getSortableAttributes());
