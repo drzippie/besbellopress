@@ -24,3 +24,4 @@ Homestead.json
 /docker/volumes/meilisearch/
 /docker/volumes/minio/
 /docker/volumes/psql/
+/docker/volumes/mariadb/

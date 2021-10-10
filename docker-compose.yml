@@ -43,6 +43,20 @@ services:
             test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
             retries: 3
             timeout: 5s
+    mariadb:
+        image: mariadb:10.2
+        ports:
+            - '3306:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: besbellopress
+            MYSQL_DATABASE: import
+            MYSQL_USER: besbellopress
+            MYSQL_PASSWORD: besbellopress
+        networks:
+            - sail
+        restart: on-failure
+        volumes:
+            - ./docker/volumes/mariadb:/var/lib/mysql
     redis:
         image: 'redis:alpine'
         ports:
