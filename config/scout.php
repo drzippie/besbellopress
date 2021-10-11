@@ -68,8 +68,8 @@ return [
     */
 
     'chunk' => [
-        'searchable' => 100,
-        'unsearchable' => 100,
+        'searchable' => 500,
+        'unsearchable' => 500,
     ],
 
     /*
@@ -130,7 +130,7 @@ return [
     */
 
     'meilisearch' => [
-        'host' => env('MEILISEARCH_HOST', 'http://meilisearch:7700'),
+        'host' => env('MEILISEARCH_HOST', 'http://host.docker.internal:7700'),
         'key' => env('MEILISEARCH_KEY', 'XXMEILI_MASTER_KEYXX'),
     ],
 

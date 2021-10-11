@@ -21,11 +21,11 @@ services:
             - '.:/var/www/html'
         networks:
             - sail
-        depends_on:
+#        depends_on:
 #            - pgsql
 #            - redis
 #            - minio
-            - meilisearch
+#            - meilisearch
 #    pgsql:
 #        image: 'postgres:14'
 #        ports:
@@ -86,22 +86,22 @@ services:
 #            test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
 #            retries: 3
 #            timeout: 5s
-    meilisearch:
-#        image: 'getmeili/meilisearch:latest'
-        build:
-            dockerfile: './docker/meilisearch-m1/Dockerfile'
-        ports:
-            - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
-        environment:
-            MEILI_MASTER_KEY: 'XXMEILI_MASTER_KEYXX'
-        volumes:
-            - './docker/volumes/meilisearch:/meilisearch/data.ms'
-        networks:
-            - sail
-        healthcheck:
-            test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:7700/health"]
-            retries: 3
-            timeout: 5s
+#    meilisearch:
+##        image: 'getmeili/meilisearch:latest'
+#        build:
+#            dockerfile: './docker/meilisearch-m1/Dockerfile'
+#        ports:
+#            - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
+#        environment:
+#            MEILI_MASTER_KEY: 'XXMEILI_MASTER_KEYXX'
+#        volumes:
+#            - './docker/volumes/meilisearch:/meilisearch/data.ms'
+#        networks:
+#            - sail
+#        healthcheck:
+#            test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:7700/health"]
+#            retries: 3
+#            timeout: 5s
 networks:
     sail:
         driver: bridge
