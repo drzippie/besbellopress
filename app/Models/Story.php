@@ -48,5 +48,13 @@ class Story extends Model
         return $this->belongsTo( Category::class, 'category_id');
     }
 
-
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
