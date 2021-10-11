@@ -22,70 +22,70 @@ services:
         networks:
             - sail
         depends_on:
-            - pgsql
-            - redis
-            - minio
+#            - pgsql
+#            - redis
+#            - minio
             - meilisearch
-    pgsql:
-        image: 'postgres:14'
-        ports:
-            - '${FORWARD_DB_PORT:-5432}:5432'
-        environment:
-            PGPASSWORD: 'besbellopress-secret'
-            POSTGRES_DB: 'besbellopress'
-            POSTGRES_USER: 'besbellopress'
-            POSTGRES_PASSWORD: 'besbellopress-secret'
-        volumes:
-            - './docker/volumes/psql:/var/lib/postgresql/data'
-        networks:
-            - sail
-        healthcheck:
-            test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
-            retries: 3
-            timeout: 5s
-    mariadb:
-        image: mariadb:10.2
-        ports:
-            - '3306:3306'
-        environment:
-            MYSQL_ROOT_PASSWORD: besbellopress
-            MYSQL_DATABASE: import
-            MYSQL_USER: besbellopress
-            MYSQL_PASSWORD: besbellopress
-        networks:
-            - sail
-        restart: on-failure
-        volumes:
-            - ./docker/volumes/mariadb:/var/lib/mysql
-    redis:
-        image: 'redis:alpine'
-        ports:
-            - '${FORWARD_REDIS_PORT:-6379}:6379'
-        volumes:
-            - 'sailredis:/data'
-        networks:
-            - sail
-        healthcheck:
-            test: ["CMD", "redis-cli", "ping"]
-            retries: 3
-            timeout: 5s
-    minio:
-        image: 'minio/minio:latest'
-        ports:
-            - '${FORWARD_MINIO_PORT:-9000}:9000'
-            - '${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900'
-        environment:
-            MINIO_ROOT_USER: 'sail'
-            MINIO_ROOT_PASSWORD: 'password'
-        volumes:
-            - './docker/volumes/minio:/data/minio'
-        networks:
-            - sail
-        command: minio server /data/minio --console-address ":8900"
-        healthcheck:
-            test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-            retries: 3
-            timeout: 5s
+#    pgsql:
+#        image: 'postgres:14'
+#        ports:
+#            - '${FORWARD_DB_PORT:-5432}:5432'
+#        environment:
+#            PGPASSWORD: 'besbellopress-secret'
+#            POSTGRES_DB: 'besbellopress'
+#            POSTGRES_USER: 'besbellopress'
+#            POSTGRES_PASSWORD: 'besbellopress-secret'
+#        volumes:
+#            - './docker/volumes/psql:/var/lib/postgresql/data'
+#        networks:
+#            - sail
+#        healthcheck:
+#            test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
+#            retries: 3
+#            timeout: 5s
+#    mariadb:
+#        image: mariadb:10.2
+#        ports:
+#            - '3306:3306'
+#        environment:
+#            MYSQL_ROOT_PASSWORD: besbellopress
+#            MYSQL_DATABASE: import
+#            MYSQL_USER: besbellopress
+#            MYSQL_PASSWORD: besbellopress
+#        networks:
+#            - sail
+#        restart: on-failure
+#        volumes:
+#            - ./docker/volumes/mariadb:/var/lib/mysql
+#    redis:
+#        image: 'redis:alpine'
+#        ports:
+#            - '${FORWARD_REDIS_PORT:-6379}:6379'
+#        volumes:
+#            - 'sailredis:/data'
+#        networks:
+#            - sail
+#        healthcheck:
+#            test: ["CMD", "redis-cli", "ping"]
+#            retries: 3
+#            timeout: 5s
+#    minio:
+#        image: 'minio/minio:latest'
+#        ports:
+#            - '${FORWARD_MINIO_PORT:-9000}:9000'
+#            - '${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900'
+#        environment:
+#            MINIO_ROOT_USER: 'sail'
+#            MINIO_ROOT_PASSWORD: 'password'
+#        volumes:
+#            - './docker/volumes/minio:/data/minio'
+#        networks:
+#            - sail
+#        command: minio server /data/minio --console-address ":8900"
+#        healthcheck:
+#            test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+#            retries: 3
+#            timeout: 5s
     meilisearch:
 #        image: 'getmeili/meilisearch:latest'
         build:

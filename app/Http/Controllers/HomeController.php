@@ -37,9 +37,9 @@ class HomeController extends Controller
 
              dd( $meilisearch->updateSortableAttributes(['id', 'published_at', 'headline']));
              */
-            //  ( $meilisearch->updateSortableAttributes(['id', 'published_at', 'headline']));
+           // ( $meilisearch->updateSortableAttributes(['id', 'published_at', 'headline']));
 
-            $options['sort'] = [ 'id:desc'];
+          //  $options['sort'] = [ 'id:desc'];
             //   dd( $meilisearch->getSortableAttributes());
 
             return $meilisearch->search($query, $options);
