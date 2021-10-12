@@ -6,8 +6,10 @@ use App\Models\Category;
 use App\Models\Story;
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use stdClass;
 
 class ImportStoriesCommand extends Command
 {
@@ -55,7 +57,7 @@ class ImportStoriesCommand extends Command
             ->pluck('id', 'import_id');
 
         // $maxStory = Story::query()->selectRaw("max((meta->'import'->'id')::INTEGER) as maxid")->value('maxid');
-        $maxStory = 40101;
+        $maxStory = 42207;
         $this->line('get stories');
 
         // Story::withoutSyncingToSearch(function () use ($maxStory, $categoriesMap, $usersMap) {
@@ -63,11 +65,10 @@ class ImportStoriesCommand extends Command
         DB::connection('import')->table('story')
             ->where('id', '>=', $maxStory)
             ->orderBy('id')
-            ->chunk(100, function ($rows) use ($usersMap, $categoriesMap) {
-
+            ->chunk(100, function (Collection $rows) use ($usersMap, $categoriesMap) {
                 $this->line('--> Process chunk');
+                /** @var stdClass $row */
                 foreach ($rows as $row) {
-
 
                     // @todo resolve bad stories
                     if (in_array($row->id, [4488])) {
