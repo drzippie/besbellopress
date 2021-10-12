@@ -10,6 +10,11 @@ use Laravel\Scout\Searchable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
+/**
+ * @property int $id
+ * @property string $headline
+ * @property string|null $subhead
+ */
 class Story extends Model
 {
     use HasFactory;
@@ -31,6 +36,7 @@ class Story extends Model
             ->generateSlugsFrom('headline')
             ->saveSlugsTo('slug');
     }
+
     /**
      * Get the name of the index associated with the model.
      *
@@ -41,11 +47,14 @@ class Story extends Model
         return 'stories_index';
     }
 
-    public function user(): BelongsTo {
-        return $this->belongsTo( User::class, 'user_id');
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
-    public function category(): BelongsTo {
-        return $this->belongsTo( Category::class, 'category_id');
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     /**

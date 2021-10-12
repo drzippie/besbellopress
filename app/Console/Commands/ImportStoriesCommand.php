@@ -55,7 +55,7 @@ class ImportStoriesCommand extends Command
             ->pluck('id', 'import_id');
 
         // $maxStory = Story::query()->selectRaw("max((meta->'import'->'id')::INTEGER) as maxid")->value('maxid');
-        $maxStory = 37616;
+        $maxStory = 40101;
         $this->line('get stories');
 
         // Story::withoutSyncingToSearch(function () use ($maxStory, $categoriesMap, $usersMap) {
@@ -106,6 +106,7 @@ class ImportStoriesCommand extends Command
 
             });
         // });
+        return 0;
     }
     // Perform model actions...
 

@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Story;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\View\View;
 use MeiliSearch\Endpoints\Indexes;
 
 class HomeController extends Controller
 {
     /**
      * Provision a new web server.
-     *
-     * @return Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): View
     {
         $results = Story::search($request->input('search', 'sevilla'),
             function (Indexes $meilisearch, $query, $options) {

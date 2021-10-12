@@ -7,6 +7,9 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
+/**
+ *
+ */
 class ImportUsersCommand extends Command
 {
     /**
@@ -62,7 +65,7 @@ class ImportUsersCommand extends Command
 
         }
 
-
+        return 0;
     }
 
 }
