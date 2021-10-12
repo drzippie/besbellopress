@@ -14,7 +14,7 @@ class HomeController extends Controller
      */
     public function __invoke(Request $request): View
     {
-        $results = Story::search($request->input('search', 'sevilla'),
+        $results = Story::search($request->input('search', ''),
             function (Indexes $meilisearch, $query, $options) {
                 //   $meilisearch->delete();
 

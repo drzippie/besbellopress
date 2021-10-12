@@ -25,3 +25,5 @@ Homestead.json
 /docker/volumes/minio/
 /docker/volumes/psql/
 /docker/volumes/mariadb/
+public/media/1/16-original.jpeg
+/public/media/

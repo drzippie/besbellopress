@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Scout\Searchable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -15,11 +18,12 @@ use Spatie\Sluggable\SlugOptions;
  * @property string $headline
  * @property string|null $subhead
  */
-class Story extends Model
+class Story extends Model implements HasMedia
 {
     use HasFactory;
     use HasSlug;
     use Searchable;
+    use InteractsWithMedia;
 
     /**
      * The attributes that should be cast.
@@ -65,5 +69,17 @@ class Story extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(368)
+            ->height(232)
+            ->sharpen(10)
+            ->performOnCollections('images')
+            ->queued();
+
     }
 }

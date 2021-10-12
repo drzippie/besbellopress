@@ -93,7 +93,7 @@ return [
         'import' => [
             'driver' => 'mysql',
             'url' => '',
-            'host' => 'host.docker.internal',
+            'host' => 'localhost',
             'port' => '3306',
             'database' => 'besbellopress',
             'username' => 'root',
