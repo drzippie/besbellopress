@@ -47,16 +47,17 @@ class ImportCategoriesCommand extends Command
         return 0;
     }
 
-    private function getChildren( $parentId = null, $node = null ) {
-        $rows =  DB::connection('import')
-            ->table('section')->where('parent_id', $parentId )
+    private function getChildren($parentId = null, $node = null)
+    {
+        $rows = DB::connection('import')
+            ->table('section')->where('parent_id', $parentId)
             ->orderBy('sortorder')
             ->get();
-        foreach( $rows as $row ) {
-            $this->line( $row->id );
+        foreach ($rows as $row) {
+            $this->line($row->id);
             $category = Category::query()
                 ->where('meta->import->id', $row->id)->first();
-            if ( empty( $category)) {
+            if (empty($category)) {
                 print_R($category);
                 $category = new Category();
                 $category->name = $row->fullname;
@@ -64,8 +65,8 @@ class ImportCategoriesCommand extends Command
                     'import' => $row,
                 ];
 
-                if ( !empty($node)) {
-                    $category->appendToNode( $node)
+                if (!empty($node)) {
+                    $category->appendToNode($node)
                         ->save();
 
                 }
@@ -73,7 +74,6 @@ class ImportCategoriesCommand extends Command
 
             }
             $this->getChildren($row->id, $category);
-
 
 
         }

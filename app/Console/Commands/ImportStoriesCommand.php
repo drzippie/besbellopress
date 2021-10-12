@@ -55,25 +55,25 @@ class ImportStoriesCommand extends Command
             ->pluck('id', 'import_id');
 
         // $maxStory = Story::query()->selectRaw("max((meta->'import'->'id')::INTEGER) as maxid")->value('maxid');
-        $maxStory = 15899;
-        $this->line( 'get stories');
+        $maxStory = 37616;
+        $this->line('get stories');
 
-        Story::withoutSyncingToSearch(function () use ($maxStory, $categoriesMap, $usersMap) {
+        // Story::withoutSyncingToSearch(function () use ($maxStory, $categoriesMap, $usersMap) {
 
         DB::connection('import')->table('story')
-            ->where('id', '>=', $maxStory )
+            ->where('id', '>=', $maxStory)
             ->orderBy('id')
-            ->chunk( 100 , function( $rows ) use ($usersMap, $categoriesMap) {
+            ->chunk(100, function ($rows) use ($usersMap, $categoriesMap) {
 
                 $this->line('--> Process chunk');
-                foreach(  $rows as $row ) {
+                foreach ($rows as $row) {
 
 
                     // @todo resolve bad stories
                     if (in_array($row->id, [4488])) {
                         continue;
                     }
-                    if (empty($row->headline) || empty($row->rawtext)) {
+                    if (empty($row->headline) || empty($row->rawtext) || empty($row->created_at)) {
                         continue;
                     }
 
@@ -97,7 +97,7 @@ class ImportStoriesCommand extends Command
                     $story->weight = $row->weight;
                     $story->body = $row->body_content ?? '';
 
-                    $story->category_id = $categoriesMap[$row->section_id] ?? null ;
+                    $story->category_id = $categoriesMap[$row->section_id] ?? null;
 
                     $story->user_id = $usersMap[$row->user_id] ?? null;
                     $story->save();
@@ -105,9 +105,9 @@ class ImportStoriesCommand extends Command
                 }
 
             });
-        });
+        // });
     }
-            // Perform model actions...
+    // Perform model actions...
 
 
 }
